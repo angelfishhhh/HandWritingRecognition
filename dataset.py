@@ -4,6 +4,7 @@ import torch
 from torch.utils.data import Dataset, DataLoader, random_split
 import torchvision.transforms as transforms
 
+
 # 1、 自定义的 Dataset 类
 
 # =================================================================================================================================================
@@ -25,7 +26,7 @@ class MyDigitsDataset(Dataset):
         self.transform = transform
         self.image_paths = []
         self.labels = []
-
+        
         for label in range(10):
             folder_path = os.path.join(root_dir,str(label))
             
@@ -71,6 +72,8 @@ def get_dataloaders(data_dir='my_digits', batch_size=32, train_ratio=0.8):
 
     transform_ = transforms.Compose([
         transforms.Resize((28, 28)),
+        # 添加数据增强：随机旋转 -10 到 10 度，让模型见识更多歪歪扭扭的字
+        transforms.RandomRotation(10), 
         transforms.RandomInvert(p=1.0),
         transforms.ToTensor(),
         transforms.Normalize((0.5), (0.5))
