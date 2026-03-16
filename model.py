@@ -27,6 +27,11 @@ class SimpleCNN(nn.Module):
         # 经过两次池化，原始 28x28 的图片变成了 7x7 (28 -> 14 -> 7)
         # 我们有 32 个特征通道，所以展平后的总神经元个数是 32 * 7 * 7
         self.fc1 = nn.Linear(32 * 7 * 7, 128) # 将这些特征映射到 128 个隐藏神经元
+        
+        # 5. Dropout层 (防止过拟合)
+        # 训练时随机让50%的神经元“失活”（输出变为0）
+        self.dropout = nn.Dropout(p=0.5)
+        
         self.fc2 = nn.Linear(128, 10)         # 最终输出 10 个神经元，对应 0-9 这 10 个类别
 
     def forward(self, x):
@@ -55,6 +60,7 @@ class SimpleCNN(nn.Module):
         
         # 第四阶段：全连接分类
         x = F.relu(self.fc1(x)) # 通过第一个全连接层，并使用 ReLU 激活函数增加非线性
+        x = self.dropout(x)     # 加入 Dropout 随机失活
         x = self.fc2(x)         # 通过输出层。注意：这里不需要激活函数，原始的得分 (Logits) 会直接交给后续的损失函数处理
         
         return x

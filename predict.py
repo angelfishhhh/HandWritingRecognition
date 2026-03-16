@@ -49,6 +49,7 @@ def predict_single_image(model, image_path, device=None):
     # 训练时的 transform_ 是应对整个 batch 的，这里我们也需要对单图做一样的事
     preprocess = transforms.Compose([
         transforms.Resize((28, 28)),          # 统一缩放至 28x28
+        transforms.RandomRotation(10),        # 随机旋转 -10 到 10 度 (保持和训练一致的尺寸计算环境虽然不影响单图测试但最好一致)
         transforms.RandomInvert(p=1.0),       # 反转颜色：让白底黑字变为黑底白字，利于提取特征
         transforms.ToTensor(),                # 转换为 PyTorch 张量，且像素值从 0-255 变成 0.0-1.0
         transforms.Normalize((0.5), (0.5))    # 归一化 (减去0.5，除以0.5，使得数据围绕 0 分布)
@@ -89,7 +90,7 @@ if __name__ == "__main__":
         print("模型加载成功！")
         
         # 2. 准备一张测试图片
-        test_image_path = "my_digits/0/img_0_111.png"
+        test_image_path = "my_digits/3/img_3_051.png"
         
         print(f"\n准备对图片进行预测: {test_image_path}")
         
