@@ -90,7 +90,7 @@ if __name__ == "__main__":
         print("模型加载成功！")
         
         # 2. 准备一张测试图片
-        test_image_path = "my_digits/3/img_3_051.png"
+        test_image_path = "my_digits/7/img_7_151.png"
         
         print(f"\n准备对图片进行预测: {test_image_path}")
         
